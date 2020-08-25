@@ -20,6 +20,8 @@ int writeWave(OutputWaveForm * waveform)
 
 int setup(Control * cont, Display * display, OutputWaveForm * waveform)
 {
+	DDRB |= (1<<MOSI)|(1<<SCK);
+	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);
 	
 	updateDisplay(display);
 }
