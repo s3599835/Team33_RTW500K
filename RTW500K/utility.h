@@ -8,6 +8,7 @@
 #define UTILITY_H
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 //SPI Stuff
 //PORT B
