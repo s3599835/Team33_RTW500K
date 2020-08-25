@@ -10,3 +10,5 @@
 
 int writeSPI(int chipselect);
 int writeToAD9833(OutputWaveForm * waveform);
+
+#endif

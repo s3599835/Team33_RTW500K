@@ -1,3 +1,10 @@
+# some weird visual studio subdirectory
 /.vs
+# project path files, unique to individual's machine
 RTW500K/RTW500K.componentinfo.xml
 RTW500K/RTW500K.cproj
+# debug/output folder
+RTW500K/Debug/
+# output files
+*.o
+*.d

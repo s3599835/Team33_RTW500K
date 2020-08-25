@@ -15,7 +15,7 @@ int writeWave(OutputWaveForm * waveform)
 {
 	writeToAD9833(waveform);
 	writeToMCP(waveform);
-	return 0
+	return 0;
 }
 
 int setup(Control * cont, Display * display, OutputWaveForm * waveform)

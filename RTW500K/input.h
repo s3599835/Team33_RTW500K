@@ -11,3 +11,5 @@
 
 int getInput(Control *cont);
 int processInput(Control *control, OutputWaveForm *waveform);
+
+#endif

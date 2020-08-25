@@ -10,3 +10,5 @@
 
 int writeToMCP(OutputWaveForm * waveform);
 int calculateVoltages(OutputWaveForm * waveform);
+
+#endif

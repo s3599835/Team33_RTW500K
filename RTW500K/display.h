@@ -10,3 +10,5 @@
 
 int drawScreen(Display *display);
 int updateDisplay(Display *display);
+
+#endif

@@ -8,7 +8,6 @@
 #define UTILITY_H
 
 #include <avr/io.h>
-#include <SPI.h>
 
 //SPI Stuff
 //PORT B
@@ -76,3 +75,5 @@ typedef struct {
 	//Current parameeter select
 	FunctionSelect currentFunction;
 } Control;
+
+#endif
