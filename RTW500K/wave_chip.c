@@ -15,7 +15,23 @@ int writeSPI (int chipselect)
 
 int writeToAD9833 (OutputWaveForm * waveform)
 {
-	//Liam
+		unsigned char byte0, byte1, byte2, byte3, byte4, byte5;
+		//Set chip enable
+		sendCommandAD9833(byte0, byte1);
+		sendCommandAD9833(byte2, byte3);
+		sendCommandAD9833(byte4, byte5);
+		//deselect if you need to
 	
 	return 0;
+}
+
+void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
+{
+	//set datatowrite
+	SPDR = byte1;
+	while(!(SPSR & (1<<SPIF)));
+	
+	SPDR = byte2;
+	while(!(SPSR & (1<<SPIF)));
+	
 }
