@@ -26,6 +26,8 @@ int setup(Control * cont, Display * display, OutputWaveForm * waveform)
 	
 	updateDisplay(display);
 	initAD9833();
+
+	return 0;
 }
 
 int main(void)

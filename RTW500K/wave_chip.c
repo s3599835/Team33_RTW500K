@@ -18,8 +18,6 @@ int writeToAD9833 (OutputWaveForm * waveform)
 	//Liam
 	
 	return 0;
-<<<<<<< Updated upstream
-=======
 }
 
 void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
@@ -96,16 +94,16 @@ void setMode(WaveType mode)
 	switch(mode)
 	{
 		case SINE:
-			clearRegBit(lowerByte, AD_OPBITEN);
-			clearRegBit(lowerByte, AD_MODE);
+			clearRegBit(&lowerByte, AD_OPBITEN);
+			clearRegBit(&lowerByte, AD_MODE);
 		break;
 		case SQURE:
-			setRegBit(lowerByte, AD_OPBITEN);
-			clearRegBit(lowerByte, AD_MODE);
+			setRegBit(&lowerByte, AD_OPBITEN);
+			clearRegBit(&lowerByte, AD_MODE);
 		break;
 		case TRIANGLE:
-			clearRegBit(lowerByte, AD_OPBITEN);
-			setRegBit(lowerByte, AD_MODE);
+			clearRegBit(&lowerByte, AD_OPBITEN);
+			setRegBit(&lowerByte, AD_MODE);
 		break;
 	}
 	
@@ -132,5 +130,4 @@ void clearRegBit(unsigned char *byte, int bit)
 	{
 		*byte &= ~(1 << bit);
 	}
->>>>>>> Stashed changes
 }

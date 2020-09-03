@@ -20,7 +20,7 @@
 #define AD_DIV2		3
 #define AD_MODE		1
 
-#define AD_2POW28	(1 << 28)
+#define AD_2POW28	(1UL << 28)
 #define AD_MCLK		25000000
 #define AD_DEFAULT_FREQ 1000
 #define AD_DEFAULT_PHASE 0
@@ -29,12 +29,12 @@
 
 int writeSPI(int chipselect);
 int writeToAD9833(OutputWaveForm * waveform);
-<<<<<<< Updated upstream
-=======
 void sendCommandAD9833(unsigned char byte1, unsigned char byte2);
 void initAD9833();
+void setFrequency(int frequency);
+void setPhase(int phase);
+void setMode(WaveType mode);
 void setRegBit(unsigned char *byte, int bit);
 void clearRegBit(unsigned char *byte, int bit);
->>>>>>> Stashed changes
 
 #endif
