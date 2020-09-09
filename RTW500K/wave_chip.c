@@ -6,18 +6,25 @@
 
 #include "wave_chip.h"
 
-int writeSPI (int chipselect)
+void writeToAD9833 (OutputWaveForm * waveform)
 {
-	//Liam
+	unsigned char upperByte = 0x00;
+	unsigned char lowerByte = 0x00;
 	
-	return 0;
-}
-
-int writeToAD9833 (OutputWaveForm * waveform)
-{
-	//Liam
+	// Write freq in 2 consecutive words
+	setRegBit(&upperByte, AD_B28);
+	sendCommandAD9833(upperByte, lowerByte);
 	
-	return 0;
+	setFrequency(waveform->frequency);
+	setMode(waveform->wavetype);
+	
+	// Select freq. and phase source registers
+	clearRegBit(&upperByte, AD_FSELECT);
+	clearRegBit(&upperByte, AD_PSELECT);
+	sendCommandAD9833(upperByte, lowerByte);
+	
+	// Must wait 8 MCLK cycles for output to propagate
+	_delay_us((double)8/AD_MCLK);
 }
 
 void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
@@ -47,11 +54,14 @@ void initAD9833()
 	setPhase(AD_DEFAULT_PHASE);
 	setMode(SINE);
 	
-	// Clear reset
+	// Clear reset, select channel 0 for freq. and phase.
 	clearRegBit(&upperByte, AD_RESET);
+	clearRegBit(&upperByte, AD_FSELECT);
+	clearRegBit(&upperByte, AD_PSELECT);
 	sendCommandAD9833(upperByte, lowerByte);
 	
-	
+	// Must wait 8 MCLK cycles for output to propagate
+	_delay_us((double)8/AD_MCLK);
 }
 
 void setFrequency(int frequency)

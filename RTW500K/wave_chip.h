@@ -27,8 +27,7 @@
 
 #include "utility.h"
 
-int writeSPI(int chipselect);
-int writeToAD9833(OutputWaveForm * waveform);
+void writeToAD9833(OutputWaveForm * waveform);
 void sendCommandAD9833(unsigned char byte1, unsigned char byte2);
 void initAD9833();
 void setFrequency(int frequency);
