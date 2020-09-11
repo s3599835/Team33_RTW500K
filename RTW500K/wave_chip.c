@@ -42,12 +42,29 @@ void writeToAD9833 (OutputWaveForm * waveform)
  */
 void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
 {
+	int count;
 	PORTB &= ~(1<<CS_AD9833);
-	SPDR = byte1;
-	while(!(SPSR & (1<<SPIF)));
-	
-	SPDR = byte2;
-	while(!(SPSR & (1<<SPIF)));
+	for(count = 0; count < 8; count++)
+	{
+		if (byte1 & 0x80)
+			PORTB |= 1<<MOSI;
+		else
+			PORTB &= ~(1<<MOSI);
+		PORTB |= 1<<SCK;
+		PORTB &= ~(1<<SCK);
+		byte1 <<= 1;
+	}
+
+	for(count = 0; count < 8; count++)
+	{
+		if (byte2 & 0x80)
+			PORTB |= 1<<MOSI;
+		else
+			PORTB &= ~(1<<MOSI);
+		PORTB |= 1<<SCK;
+		PORTB &= ~(1<<SCK);
+		byte2 <<= 1;
+	}
 	PORTB |= 1<<CS_AD9833;
 	
 }
