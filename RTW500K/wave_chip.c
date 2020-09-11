@@ -6,6 +6,13 @@
 
 #include "wave_chip.h"
 
+/** 
+ *	Writes the user's desired waveform as specified by
+ * the waveform struct to the AD9833, by calling the 
+ * internal set frequency and set mode functions, and 
+ * ensuring that frequency and phase channels 0 are 
+ * selected, as these are the only ones required.
+ */
 void writeToAD9833 (OutputWaveForm * waveform)
 {
 	unsigned char upperByte = 0x00;
@@ -27,6 +34,12 @@ void writeToAD9833 (OutputWaveForm * waveform)
 	_delay_us((double)8/AD_MCLK);
 }
 
+/** 
+ *	Sends a 16-bit/2-byte command to the AD9833 by pulling 
+ * the active-low 9833 chip select line low and pushing the 
+ * bytes out over the SPI data line, then returning the chip
+ * select high.
+ */
 void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
 {
 	PORTB &= ~(1<<CS_AD9833);
@@ -39,6 +52,10 @@ void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
 	
 }
 
+/** 
+ *	Follows the AD9833 data sheet information to set the 9833's
+ * registers to known values at power on or reset.
+ */
 void initAD9833()
 {
 	unsigned char upperByte = 0x00;
@@ -64,6 +81,11 @@ void initAD9833()
 	_delay_us((double)8/AD_MCLK);
 }
 
+/** 
+ *	Sets the 2x 14-bit frequency registers to the appropriate
+ * value to represent the frequency argument as determined by
+ * the equation defined in the data sheet
+ */
 void setFrequency(int frequency)
 {
 	unsigned char firstUpperByte = 0x40;
@@ -75,14 +97,18 @@ void setFrequency(int frequency)
 	
 	firstLowerByte = freqreg;
 	firstUpperByte |= ((freqreg >> 8) & 0x3f);
-	secondLowerByte = freqreg >> 16;
-	secondUpperByte |= ((freqreg >> 24) & 0x3f);
+	secondLowerByte = freqreg >> 14;
+	secondUpperByte |= ((freqreg >> 22) & 0x3f);
 	
 	sendCommandAD9833(firstUpperByte, firstLowerByte);
 	sendCommandAD9833(secondUpperByte, secondLowerByte);
 }
 
-// phase in degrees
+/** 
+ *	Sets the 12-bit phase register to the appropriate
+ * value to represent the phase (degrees) argument as determined by
+ * the equation defined in the data sheet
+ */
 void setPhase(int phase)
 {
 	unsigned char upperByte = 0xC0;
@@ -96,6 +122,10 @@ void setPhase(int phase)
 	sendCommandAD9833(upperByte, lowerByte);
 }
 
+/** 
+ *	Sets or clears the appropriate bits in the AD9833 control register
+ * to output the desired waveform as determined by the enumerated mode input.
+ */
 void setMode(WaveType mode)
 {
 	unsigned char upperByte = 0x00;
