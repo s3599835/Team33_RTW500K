@@ -20,10 +20,14 @@ int writeWave(OutputWaveForm * waveform)
 
 int setup(Control * cont, Display * display, OutputWaveForm * waveform)
 {
-	DDRB |= (1<<MOSI)|(1<<SCK);
+	DDRB |= (1<<MOSI)|(1<<SCK)|(1<<CS_AD9833)|(1<<CS_MTP);
+	PORTB |= 1 << CS_AD9833;	//9833 CS Active Low
 	SPCR = (1<<SPE)|(1<<MSTR)|(1<<SPR0);
 	
 	updateDisplay(display);
+	initAD9833();
+
+	return 0;
 }
 
 int main(void)
