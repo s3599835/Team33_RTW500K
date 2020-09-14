@@ -20,20 +20,20 @@
 #define AD_DIV2		3
 #define AD_MODE		1
 
-#define AD_2POW28	(1UL << 28)
-#define AD_MCLK		25000000
+#define AD_2POW28	268435456UL //2^28
+#define AD_MCLK		25000000UL
 #define AD_DEFAULT_FREQ 1000
 #define AD_DEFAULT_PHASE 0
 
 #include "utility.h"
 
 void writeToAD9833(OutputWaveForm * waveform);
-void sendCommandAD9833(unsigned char byte1, unsigned char byte2);
+void sendCommandAD9833(uint8_t byte1, uint8_t byte2);
 void initAD9833();
-void setFrequency(int frequency);
+void setFrequency(float frequency);
 void setPhase(int phase);
 void setMode(WaveType mode);
-void setRegBit(unsigned char *byte, int bit);
-void clearRegBit(unsigned char *byte, int bit);
+void setRegBit(uint8_t *byte, int bit);
+void clearRegBit(uint8_t *byte, int bit);
 
 #endif

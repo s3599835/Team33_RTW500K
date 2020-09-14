@@ -15,8 +15,8 @@
  */
 void writeToAD9833 (OutputWaveForm * waveform)
 {
-	unsigned char upperByte = 0x00;
-	unsigned char lowerByte = 0x00;
+	uint8_t upperByte = 0x00;
+	uint8_t lowerByte = 0x00;
 	
 	// Write freq in 2 consecutive words
 	setRegBit(&upperByte, AD_B28);
@@ -40,31 +40,33 @@ void writeToAD9833 (OutputWaveForm * waveform)
  * bytes out over the SPI data line, then returning the chip
  * select high.
  */
-void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
+void sendCommandAD9833(uint8_t byte1, uint8_t byte2)
 {
 	int count;
 	PORTB &= ~(1<<CS_AD9833);
 	for(count = 0; count < 8; count++)
 	{
+		PORTB &= ~(1<<SCK);
 		if (byte1 & 0x80)
 			PORTB |= 1<<MOSI;
 		else
 			PORTB &= ~(1<<MOSI);
 		PORTB |= 1<<SCK;
-		PORTB &= ~(1<<SCK);
 		byte1 <<= 1;
 	}
+	PORTB &= ~(1<<SCK);
 
 	for(count = 0; count < 8; count++)
 	{
+		PORTB &= ~(1<<SCK);
 		if (byte2 & 0x80)
 			PORTB |= 1<<MOSI;
 		else
 			PORTB &= ~(1<<MOSI);
 		PORTB |= 1<<SCK;
-		PORTB &= ~(1<<SCK);
 		byte2 <<= 1;
 	}
+	PORTB &= ~(1<<SCK);
 	PORTB |= 1<<CS_AD9833;
 	
 }
@@ -75,8 +77,8 @@ void sendCommandAD9833(unsigned char byte1, unsigned char byte2)
  */
 void initAD9833()
 {
-	unsigned char upperByte = 0x00;
-	unsigned char lowerByte = 0x00;
+	uint8_t upperByte = 0x00;
+	uint8_t lowerByte = 0x00;
 	
 	// Set reset and consecutive freq. write bits
 	setRegBit(&upperByte, AD_RESET);
@@ -103,19 +105,19 @@ void initAD9833()
  * value to represent the frequency argument as determined by
  * the equation defined in the data sheet
  */
-void setFrequency(int frequency)
+void setFrequency(float frequency)
 {
-	unsigned char firstUpperByte = 0x40;
-	unsigned char secondUpperByte = 0x40;
-	unsigned char firstLowerByte = 0x00;
-	unsigned char secondLowerByte = 0x00;
+	uint8_t firstUpperByte = 0x40;
+	uint8_t secondUpperByte = 0x40;
+	uint8_t firstLowerByte = 0x00;
+	uint8_t secondLowerByte = 0x00;
 	
-	uint32_t freqreg = (frequency * AD_2POW28/AD_MCLK);
+	uint32_t freqreg = (uint32_t)(frequency * AD_2POW28/AD_MCLK);
 	
-	firstLowerByte = freqreg;
-	firstUpperByte |= ((freqreg >> 8) & 0x3f);
-	secondLowerByte = freqreg >> 14;
-	secondUpperByte |= ((freqreg >> 22) & 0x3f);
+	firstLowerByte = (uint8_t)freqreg;
+	firstUpperByte |= (uint8_t)((freqreg >> 8) & 0x3f);
+	secondLowerByte = (uint8_t)freqreg >> 14;
+	secondUpperByte |= (uint8_t)((freqreg >> 22) & 0x3f);
 	
 	sendCommandAD9833(firstUpperByte, firstLowerByte);
 	sendCommandAD9833(secondUpperByte, secondLowerByte);
@@ -128,13 +130,13 @@ void setFrequency(int frequency)
  */
 void setPhase(int phase)
 {
-	unsigned char upperByte = 0xC0;
-	unsigned char lowerByte = 0x00;
+	uint8_t upperByte = 0xC0;
+	uint8_t lowerByte = 0x00;
 	
-	uint16_t phasereg = (phase * 4096/(2*M_PI));
+	uint16_t phasereg = (uint16_t)(phase * 4096/(2*M_PI));
 	
-	lowerByte = phasereg;
-	upperByte |= ((phasereg >> 8) & 0x0f);
+	lowerByte = (uint8_t)phasereg;
+	upperByte |= (uint8_t)((phasereg >> 8) & 0x0f);
 	
 	sendCommandAD9833(upperByte, lowerByte);
 }
@@ -145,8 +147,8 @@ void setPhase(int phase)
  */
 void setMode(WaveType mode)
 {
-	unsigned char upperByte = 0x00;
-	unsigned char lowerByte = 0x00;
+	uint8_t upperByte = 0x00;
+	uint8_t lowerByte = 0x00;
 	
 	switch(mode)
 	{
@@ -167,7 +169,7 @@ void setMode(WaveType mode)
 	sendCommandAD9833(upperByte, lowerByte);
 }
 
-void setRegBit(unsigned char *byte, int bit)
+void setRegBit(uint8_t *byte, int bit)
 {
 	if (bit > 7)
 	{
@@ -178,7 +180,7 @@ void setRegBit(unsigned char *byte, int bit)
 	}
 }
 
-void clearRegBit(unsigned char *byte, int bit)
+void clearRegBit(uint8_t *byte, int bit)
 {
 	if (bit > 7)
 	{
