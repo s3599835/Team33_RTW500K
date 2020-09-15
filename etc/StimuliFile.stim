@@ -1,0 +1,5 @@
+$log PORTB
+$startlog output.txt
+#6000
+$stoplog
+$break
