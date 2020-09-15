@@ -30,7 +30,7 @@
 void writeToAD9833(OutputWaveForm * waveform);
 void sendCommandAD9833(uint8_t byte1, uint8_t byte2);
 void initAD9833();
-void setFrequency(float frequency);
+void setFrequency(int frequency);
 void setPhase(int phase);
 void setMode(WaveType mode);
 void setRegBit(uint8_t *byte, int bit);

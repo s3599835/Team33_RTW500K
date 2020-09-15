@@ -105,14 +105,14 @@ void initAD9833()
  * value to represent the frequency argument as determined by
  * the equation defined in the data sheet
  */
-void setFrequency(float frequency)
+void setFrequency(int frequency)
 {
 	uint8_t firstUpperByte = 0x40;
 	uint8_t secondUpperByte = 0x40;
 	uint8_t firstLowerByte = 0x00;
 	uint8_t secondLowerByte = 0x00;
 	
-	uint32_t freqreg = (uint32_t)(frequency * AD_2POW28/AD_MCLK);
+	uint32_t freqreg = (uint32_t)((float)frequency * AD_2POW28/AD_MCLK);
 	
 	firstLowerByte = (uint8_t)freqreg;
 	firstUpperByte |= (uint8_t)((freqreg >> 8) & 0x3f);
@@ -132,8 +132,9 @@ void setPhase(int phase)
 {
 	uint8_t upperByte = 0xC0;
 	uint8_t lowerByte = 0x00;
+	float phase_rads = (float)phase * M_PI/180.0f;
 	
-	uint16_t phasereg = (uint16_t)(phase * 4096/(2*M_PI));
+	uint16_t phasereg = (uint16_t)(phase_rads * 4096/(2*M_PI));
 	
 	lowerByte = (uint8_t)phasereg;
 	upperByte |= (uint8_t)((phasereg >> 8) & 0x0f);
