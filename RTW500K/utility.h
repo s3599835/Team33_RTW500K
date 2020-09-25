@@ -77,7 +77,7 @@ typedef struct {
 	int inputChange;
 	//Input that has been read;
 	int inputRead;
-	//Current parameeter select
+	//Current parameter select
 	FunctionSelect currentFunction;
 } Control;
 
