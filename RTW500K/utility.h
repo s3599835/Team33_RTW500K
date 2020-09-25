@@ -9,6 +9,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <string.h>
 
 #ifndef M_PI
 #define M_PI 3.14159265
@@ -64,10 +65,10 @@ typedef struct {
 
 typedef struct {
 	char frequency[6];
-	char amplitude[6];
-	char voltageOffset[6];
+	char amplitude[4];
+	char voltageOffset[3];
 	//SQR SIN TRI
-	char wave[4];
+	char wave[3];
 	int cursorPositionx;
 	int cursorPositiony;
 } Display;

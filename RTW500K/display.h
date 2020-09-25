@@ -9,7 +9,7 @@
 #include "utility.h"
 
 int drawScreen(Display *display);
-int updateDisplay(Display *display);
+int updateDisplay(Display *display, OutputWaveForm *waveform);
 void lcdGotoXY(unsigned char x, unsigned char y);
 void lcdPrintString (char * string);
 void lcdInit();

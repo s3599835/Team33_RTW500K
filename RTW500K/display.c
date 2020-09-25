@@ -65,7 +65,7 @@ void lcdPrintString (char * string)
 {
 	
 	unsigned char index = 0;
-	while(string[index] != 0)
+	while(string[index] != NULL)
 	{
 		
 		lcdWriteData(string[index]);
@@ -76,20 +76,51 @@ void lcdPrintString (char * string)
 void lcdGotoXY(unsigned char x, unsigned char y)
 {
 	unsigned char indexArray[] = {0x80, 0xC0, 0x94, 0xD4};//row and coloum via pixel index
-	lcdWriteCommand(indexArray[y-1]+ x -1);
+	lcdWriteCommand(indexArray[y]+ x);
 	_delay_us(1000);
 }
 int drawScreen(Display *display)
 {
-	//Liam
-	//Actually draw to the screen
-
+	char F[16], Hz[16], A[16], Vo[16];
+	strcpy(F, "F=");
+	strcpy(Hz, "Hz ");
+	strcpy(A, "A=");
+	strcpy(Vo, "V  Vo=");
+	
+	strcat(F, display->frequency);
+	strcat(Hz, display->wave);
+	strcat(F, Hz);
+	
+	strcat(A, display->amplitude);
+	strcat(Vo, display->voltageOffset);
+	strcat(A, Vo);
+	
+	lcdGotoXY(0, 0);
+	lcdPrintString(F);
+	lcdGotoXY(0, 1);
+	lcdPrintString(A);
+	lcdGotoXY(display->cursorPositionx, display->cursorPositiony)
+	
 	return 0;
 }
 
-int updateDisplay(Display * display)
+int updateDisplay(Display * display, OutputWaveForm * waveform)
 {
-	//Stephen
-	//Function to update the display struct (not write to display)
+	switch(waveform->wavetype)
+	{
+		case SINE:
+			strcpy(display->wave, "SIN");
+		break;
+		case SQURE:
+			strcpy(display->wave, "SQR");
+		break;
+		case TRIANGLE:
+			strcpy(display->wave, "TRI");
+		break;
+	}
+	sprintf(display->frequency, "%06d", waveform->frequency);
+	sprintf(display->amplitude, "%04.1f", waveform->amplitude);
+	sprintf(display->voltageOffset, "%3.1f", waveform->offset);
+	
 	return 0;
 }
